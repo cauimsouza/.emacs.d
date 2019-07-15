@@ -5,56 +5,135 @@
     (toggle-scroll-bar -1)
     (display-time-mode 1)
     (fset 'yes-or-no-p 'y-or-n-p)
+    (column-number-mode t)
   #+END_SRC
 * Use-package
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (require 'use-package-ensure)
   (setq use-package-always-ensure t)
+  #+END_SRC
+* Diminish
+#+BEGIN_SRC emacs-lisp
+(use-package diminish)
 #+END_SRC
 * Helm
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package helm
     :diminish helm-mode
     :init
     (helm-mode)
     :bind (("M-x" . helm-M-x)
 	   ("C-x C-f" . helm-find-files)))
-#+END_SRC
+  #+END_SRC
 
 * Ace window
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :bind (("M-o" . ace-window)))
-#+END_SRC
+  #+END_SRC
 
 * Org mode
-#+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (setq org-use-speed-commands 1))
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+    (use-package org
+      :config
+      (setq org-use-speed-commands 1)
+      (setq org-log-done 'time)
+      (org-indent-mode)
+      (org-bullets-mode))
+  #+END_SRC
 
 * Expand-region
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package expand-region
     :bind (("C-=" . er/expand-region)))
-#+END_SRC
+  #+END_SRC
 
 * Notmuch
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package notmuch)
-#+END_SRC
+  #+END_SRC
 
 * Auto-complete
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (ac-config-default)
-#+END_SRC
+  #+END_SRC
 * Smart-mode-line
-[[https://github.com/Malabarba/smart-mode-line][Github]]
-#+BEGIN_SRC emacs-lisp
+  [[https://github.com/Malabarba/smart-mode-line][Github]]
+  #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line)
-#+END_SRC
+  #+END_SRC
 * Magit
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package magit)
-#+END_SRC
+  #+END_SRC
+* Functions
+  #+BEGIN_SRC emacs-lisp
+(defun indent ()
+  "Indent the whole file"
+  (interactive)
+  (indent-region 1 (buffer-size)))
+
+(defun add-2-nl ()
+  "Add two new lines"
+  (interactive)
+  (insert "\\newline\n\\newline")
+  (indent))
+
+(defun new-latex-frame ()
+  "Add a new beamer frame"
+  (interactive)
+  (insert "\\begin{frame}\n\n\\end{frame}")
+  (previous-line)
+  (indent-for-tab-command))
+
+(defun new-latex-itemize ()
+  "Add a new beamer frame"
+  (interactive)
+  (insert "\\begin{itemize}\n\n\\end{itemize}")
+  (previous-line)
+  (indent-for-tab-command))
+
+(defun insert-line-below ()
+  "Add an empty below the line on which point lays"
+  (interactive)
+  (move-end-of-line nil)
+  (newline))
+
+(defun get-buffer-or-create (buffername bufferfile)
+  "Displays buffer BUFFERNAME.
+If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
+  (interactive)
+  (switch-to-buffer
+   (or (get-buffer buffername) (find-file bufferfile))))
+  #+END_SRC
+* Projectile
+  #+BEGIN_SRC emacs-lisp
+    (use-package projectile
+                 :diminish projectile-mode
+                 :init
+                 (projectile-mode)
+                 :bind (("s-p" . projectile-command-map)
+                        ("C-c p" . projectile-command-map)))
+  #+END_SRC
+* Multiple-cursors
+  #+BEGIN_SRC emacs-lisp
+    (use-package multiple-cursors
+                 :bind (("C-S-c C-S-c" . mc/edit-lines)
+                        ("C->" . mc/mark-next-like-this)
+                        ("C-<" . mc/mark-previous-like-this)
+                        ("C-c C-<" . mc/mark-all-like-this)))
+  #+END_SRC
+
+* Keybindings
+  #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-o") 'insert-line-below)
+(global-set-key (kbd "<f8>")
+	        (lambda ()
+		  (interactive)
+		  (get-buffer-or-create "todo.org" "~/notas/todo.org")))
+		  
+(global-set-key (kbd "<f7>")
+	        (lambda ()
+		  (interactive)
+		  (get-buffer-or-create ".emacs" "~/.emacs")))
+  #+END_SRC
