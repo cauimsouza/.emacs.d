@@ -124,7 +124,10 @@ If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
                         ("C-<" . mc/mark-previous-like-this)
                         ("C-c C-<" . mc/mark-all-like-this)))
   #+END_SRC
-
+* Iedit
+#+BEGIN_SRC emacs-lisp
+  (use-package iedit)
+#+END_SRC
 * Keybindings
   #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-o") 'insert-line-below)
