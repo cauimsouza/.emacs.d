@@ -35,11 +35,12 @@
 * Org mode
   #+BEGIN_SRC emacs-lisp
     (use-package org
+      :init
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+      (add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
       :config
       (setq org-use-speed-commands 1)
-      (setq org-log-done 'time)
-      (org-indent-mode)
-      (org-bullets-mode))
+      (setq org-log-done 'time))
   #+END_SRC
 
 * Expand-region
