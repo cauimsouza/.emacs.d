@@ -6,6 +6,7 @@
     (display-time-mode 1)
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
+    (setq display-time-day-and-date 1)
   #+END_SRC
 * Use-package
   #+BEGIN_SRC emacs-lisp
@@ -130,14 +131,15 @@ If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
 #+END_SRC
 * Keybindings
   #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-o") 'insert-line-below)
-(global-set-key (kbd "<f8>")
-	        (lambda ()
-		  (interactive)
-		  (get-buffer-or-create "todo.org" "~/notas/todo.org")))
+    (global-set-key (kbd "C-o") 'insert-line-below)
+    (global-set-key (kbd "<f8>")
+                    (lambda ()
+                      (interactive)
+                      (get-buffer-or-create "todo.org" "~/notas/todo.org")))
 		  
-(global-set-key (kbd "<f7>")
-	        (lambda ()
-		  (interactive)
-		  (get-buffer-or-create ".emacs" "~/.emacs")))
+    (global-set-key (kbd "<f7>")
+                    (lambda ()
+                      (interactive)
+                      (get-buffer-or-create ".emacs" "~/.emacs")))
+    (global-set-key (kbd "C-S-s") 'isearch-forward-symbol-at-point)
   #+END_SRC
