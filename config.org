@@ -7,6 +7,7 @@
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
     (setq display-time-day-and-date 1)
+    (setq inhibit-startup-screen t)
   #+END_SRC
 * Use-package
   #+BEGIN_SRC emacs-lisp
