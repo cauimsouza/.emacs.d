@@ -6,6 +6,8 @@
     (display-time-mode 1)
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
+    (setq display-time-day-and-date 1)
+    (setq inhibit-startup-screen t)
   #+END_SRC
 * Use-package
   #+BEGIN_SRC emacs-lisp
@@ -42,6 +44,31 @@
       :config
       (setq org-use-speed-commands 1)
       (setq org-log-done 'time))
+  #+END_SRC
+
+* Merlin
+  #+BEGIN_SRC emacs-lisp
+    (use-package merlin)
+    (if (functionp 'merlin-mode)
+        (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var"
+                                                             "share")))))
+          (when (and opam-share (file-directory-p opam-share))
+            ;; Register Merlin
+            (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+            (autoload 'merlin-mode "merlin" nil t nil)
+            ;; Automatically start it in OCaml buffers
+            (add-hook 'tuareg-mode-hook 'merlin-mode t)
+            (add-hook 'caml-mode-hook 'merlin-mode t)
+            ;; Use opam switch to lookup ocamlmerlin binary
+            (setq merlin-command 'opam))))
+  #+END_SRC
+
+* Which key
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :init
+      (which-key-mode))
   #+END_SRC
 
 * Expand-region
@@ -129,16 +156,21 @@ If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
 #+BEGIN_SRC emacs-lisp
   (use-package iedit)
 #+END_SRC
+* All the icons
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
+#+END_SRC
 * Keybindings
   #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-o") 'insert-line-below)
-(global-set-key (kbd "<f8>")
-	        (lambda ()
-		  (interactive)
-		  (get-buffer-or-create "todo.org" "~/notas/todo.org")))
+    (global-set-key (kbd "C-o") 'insert-line-below)
+    (global-set-key (kbd "<f8>")
+                    (lambda ()
+                      (interactive)
+                      (get-buffer-or-create "todo.org" "~/notas/todo.org")))
 		  
-(global-set-key (kbd "<f7>")
-	        (lambda ()
-		  (interactive)
-		  (get-buffer-or-create ".emacs" "~/.emacs")))
+    (global-set-key (kbd "<f7>")
+                    (lambda ()
+                      (interactive)
+                      (get-buffer-or-create ".emacs" "~/.emacs")))
+    (global-set-key (kbd "C-S-s") 'isearch-forward-symbol-at-point)
   #+END_SRC
