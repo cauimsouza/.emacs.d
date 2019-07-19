@@ -45,6 +45,31 @@
       (setq org-log-done 'time))
   #+END_SRC
 
+* Merlin
+  #+BEGIN_SRC emacs-lisp
+    (use-package merlin)
+    (if (functionp 'merlin-mode)
+        (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var"
+                                                             "share")))))
+          (when (and opam-share (file-directory-p opam-share))
+            ;; Register Merlin
+            (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+            (autoload 'merlin-mode "merlin" nil t nil)
+            ;; Automatically start it in OCaml buffers
+            (add-hook 'tuareg-mode-hook 'merlin-mode t)
+            (add-hook 'caml-mode-hook 'merlin-mode t)
+            ;; Use opam switch to lookup ocamlmerlin binary
+            (setq merlin-command 'opam))))
+  #+END_SRC
+
+* Which key
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :init
+      (which-key-mode))
+  #+END_SRC
+
 * Expand-region
   #+BEGIN_SRC emacs-lisp
   (use-package expand-region
@@ -129,6 +154,10 @@ If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
 * Iedit
 #+BEGIN_SRC emacs-lisp
   (use-package iedit)
+#+END_SRC
+* All the icons
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
 #+END_SRC
 * Keybindings
   #+BEGIN_SRC emacs-lisp
