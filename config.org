@@ -34,6 +34,19 @@
     :bind (("M-o" . ace-window)))
   #+END_SRC
 
+* Latex
+  #+BEGIN_SRC emacs-lisp
+    (use-package auctex
+      :defer t)
+    (unless (functionp 'latex-extra-mode)
+      (package-install 'latex-extra-mode)
+      (add-hook 'LaTeX-mode-hook #'latex-extra-mode))
+    (setq-default TeX-master nil)
+    (setq Tex-parse-self t)
+    (setq Tex-auto-save t)
+    (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
+  #+END_SRC
+
 * Org mode
   #+BEGIN_SRC emacs-lisp
     (use-package org
@@ -96,43 +109,29 @@
   #+END_SRC
 * Functions
   #+BEGIN_SRC emacs-lisp
-(defun indent ()
-  "Indent the whole file"
-  (interactive)
-  (indent-region 1 (buffer-size)))
+    (defun indent ()
+      "Indent the whole file"
+      (interactive)
+      (indent-region 1 (buffer-size)))
 
-(defun add-2-nl ()
-  "Add two new lines"
-  (interactive)
-  (insert "\\newline\n\\newline")
-  (indent))
+    (defun add-2-nl ()
+      "Add two new lines"
+      (interactive)
+      (insert "\\newline\n\\newline")
+      (indent))
 
-(defun new-latex-frame ()
-  "Add a new beamer frame"
-  (interactive)
-  (insert "\\begin{frame}\n\n\\end{frame}")
-  (previous-line)
-  (indent-for-tab-command))
+    (defun insert-line-below ()
+      "Add an empty below the line on which point lays"
+      (interactive)
+      (move-end-of-line nil)
+      (newline))
 
-(defun new-latex-itemize ()
-  "Add a new beamer frame"
-  (interactive)
-  (insert "\\begin{itemize}\n\n\\end{itemize}")
-  (previous-line)
-  (indent-for-tab-command))
-
-(defun insert-line-below ()
-  "Add an empty below the line on which point lays"
-  (interactive)
-  (move-end-of-line nil)
-  (newline))
-
-(defun get-buffer-or-create (buffername bufferfile)
-  "Displays buffer BUFFERNAME.
-If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
-  (interactive)
-  (switch-to-buffer
-   (or (get-buffer buffername) (find-file bufferfile))))
+    (defun get-buffer-or-create (buffername bufferfile)
+      "Displays buffer BUFFERNAME.
+    If buffer already exists, displays it. Otherwise, visits the file BUFFERFILE."
+      (interactive)
+      (switch-to-buffer
+       (or (get-buffer buffername) (find-file bufferfile))))
   #+END_SRC
 * Projectile
   #+BEGIN_SRC emacs-lisp
