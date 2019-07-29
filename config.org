@@ -6,8 +6,25 @@
     (display-time-mode 1)
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
+    (show-paren-mode)
     (setq display-time-day-and-date 1)
     (setq inhibit-startup-screen t)
+    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+    (progn
+      (global-unset-key (kbd "C-x C-c"))
+      (global-set-key (kbd "C-x C-.") 'save-buffers-kill-terminal))
+    (setq custom-file "~/.emacs.d/custom.el")
+    (unless (file-exists-p custom-file)
+      (write-region "" nil custom-file))
+    (load custom-file)
+
+    (progn ; backup files settings
+      (setq backup-directory-alist `(("." . "~/.saves"))
+            backup-by-copying t
+            delete-old-versions t
+            kept-new-versions 6
+            kept-old-versions 2
+            version-control t))
   #+END_SRC
 * Use-package
   #+BEGIN_SRC emacs-lisp
@@ -50,6 +67,8 @@
 * Org mode
   #+BEGIN_SRC emacs-lisp
     (use-package org
+      :bind
+      (("\C-cc" . org-capture))
       :init
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
       (add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
@@ -58,10 +77,14 @@
       (setq org-use-speed-commands 1)
       (setq org-log-done 'time))
   #+END_SRC
-
+** Org pomodoro
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-pomodoro)
+  #+END_SRC
 * Merlin
   #+BEGIN_SRC emacs-lisp
-    (use-package merlin)
+    (use-package merlin
+      :diminish)
     (if (functionp 'merlin-mode)
         (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var"
                                                              "share")))))
@@ -76,6 +99,19 @@
             (setq merlin-command 'opam))))
   #+END_SRC
 
+* Python
+#+BEGIN_SRC emacs-lisp
+  (progn
+    (unless (functionp 'elpy-enable)
+      (package-install 'elpy))
+    (elpy-enable))
+  (use-package anaconda-mode
+    :init
+    (add-hook 'python-mode-hook 'anaconda-mode))
+
+  (eval-after-load "company"
+   '(add-to-list 'company-backends 'company-anaconda))
+#+END_SRC
 * Which key
 
   #+BEGIN_SRC emacs-lisp
@@ -95,9 +131,12 @@
   (use-package notmuch)
   #+END_SRC
 
-* Auto-complete
+* Company
   #+BEGIN_SRC emacs-lisp
-  (ac-config-default)
+    (use-package company
+      :diminish
+      :init
+      (add-hook 'after-init-hook 'global-company-mode))
   #+END_SRC
 * Smart-mode-line
   [[https://github.com/Malabarba/smart-mode-line][Github]]
@@ -155,6 +194,15 @@
 #+BEGIN_SRC emacs-lisp
   (use-package iedit)
 #+END_SRC
+* Highlight too long lines
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default
+   whitespace-line-column 80
+   whitespace-style       '(face lines-tail tabs))
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+#+END_SRC
+
 * All the icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons)
@@ -166,7 +214,7 @@
                     (lambda ()
                       (interactive)
                       (get-buffer-or-create "todo.org" "~/notas/todo.org")))
-		  
+
     (global-set-key (kbd "<f7>")
                     (lambda ()
                       (interactive)
