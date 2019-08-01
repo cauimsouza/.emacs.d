@@ -74,9 +74,12 @@
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
       (add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
       (add-hook 'org-mode-hook (lambda () (visual-line-mode)))
+      (setq org-todo-keywords
+          '((sequence "TODO" "IN PROGRESS"  "|" "DONE" "CANCELLED")))
       :config
       (setq org-use-speed-commands 1)
-      (setq org-log-done 'time))
+      (setq org-log-done 'time)
+      )
   #+END_SRC
 ** Org pomodoro
   #+BEGIN_SRC emacs-lisp
