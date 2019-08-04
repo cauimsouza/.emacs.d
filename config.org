@@ -57,7 +57,7 @@
     (use-package auctex
       :defer t)
     (unless (functionp 'latex-extra-mode)
-      (package-install 'latex-extra-mode)
+      (package-install 'latex-extra)
       (add-hook 'LaTeX-mode-hook #'latex-extra-mode))
     (setq-default TeX-master nil)
     (setq Tex-parse-self t)
