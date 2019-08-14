@@ -6,7 +6,6 @@
     (display-time-mode 1)
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
-    (global-linum-mode)
     (show-paren-mode)
     (setq display-time-day-and-date 1)
     (setq inhibit-startup-screen t)
