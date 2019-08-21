@@ -3,11 +3,12 @@
     (menu-bar-mode -1)
     (tool-bar-mode -1)
     (toggle-scroll-bar -1)
-    (display-time-mode 1)
+    (progn
+      (setq display-time-day-and-date nil)
+      (display-time-mode 1))
     (fset 'yes-or-no-p 'y-or-n-p)
     (column-number-mode t)
     (show-paren-mode)
-    (setq display-time-day-and-date 1)
     (setq inhibit-startup-screen t)
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
     (progn
