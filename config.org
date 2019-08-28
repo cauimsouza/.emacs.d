@@ -59,8 +59,10 @@
     (unless (functionp 'latex-extra-mode)
       (package-install 'latex-extra))
     (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
+    (add-hook 'LaTeX-mode-hook #'(flyspell-mode t))
     (setq-default TeX-master nil)
     (setq Tex-parse-self t)
+    (setq reftex-plug-into-AUCTeX t)
     (setq Tex-auto-save t)
     (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
   #+END_SRC
