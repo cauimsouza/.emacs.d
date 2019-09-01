@@ -62,6 +62,7 @@
     (setq-default TeX-master nil)
     (setq Tex-parse-self t)
     (setq Tex-auto-save t)
+    (setq LaTeX-environment-list (append '("frame") LaTeX-environment-list))
     (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
   #+END_SRC
 
