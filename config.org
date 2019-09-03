@@ -65,6 +65,9 @@
     (setq reftex-plug-into-AUCTeX t)
     (setq Tex-auto-save t)
     (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
+    (add-hook 'LaTeX-mode-hook (lambda ()
+                                 (setq LaTeX-environment-list
+                                       (append '(("frame") ("block")) LaTeX-environment-list))))
   #+END_SRC
 
 * Org mode
