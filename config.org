@@ -62,8 +62,12 @@
     (setq-default TeX-master nil)
     (setq Tex-parse-self t)
     (setq Tex-auto-save t)
-    (setq LaTeX-environment-list (append '("frame") LaTeX-environment-list))
     (add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
+    (add-hook 'LaTeX-mode-hook
+              (lambda ()
+                (setq
+                 LaTeX-environment-list
+                 (append '(("frame")) LaTeX-environment-list))))
   #+END_SRC
 
 * Org mode
@@ -86,6 +90,10 @@
   #+BEGIN_SRC emacs-lisp
     (use-package org-pomodoro)
   #+END_SRC
+* PDF-tools
+#+BEGIN_SRC emacs-lisp
+  (use-package pdf-tools)
+#+END_SRC
 * Merlin
   #+BEGIN_SRC emacs-lisp
     (use-package merlin
@@ -103,7 +111,12 @@
             ;; Use opam switch to lookup ocamlmerlin binary
             (setq merlin-command 'opam))))
   #+END_SRC
-
+* Haskell
+#+BEGIN_SRC emacs-lisp
+  (package-install 'haskell-mode)
+  (package-install 'intero-mode)
+  (add-hook 'haskell-mode-hook 'intero-mode)
+#+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
   (progn
