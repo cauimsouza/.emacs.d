@@ -74,7 +74,10 @@
       :bind
       (("\C-cc" . org-capture))
       :init
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+      (progn
+        (unless (functionp 'org-bullets-mode)
+          (use-package org-bullets))
+        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
       (add-hook 'org-mode-hook (lambda () (org-indent-mode 1)))
       (add-hook 'org-mode-hook (lambda () (visual-line-mode)))
       (setq org-todo-keywords
@@ -88,9 +91,10 @@
   #+BEGIN_SRC emacs-lisp
     (use-package org-pomodoro)
   #+END_SRC
-* PDF-tools
+* PDF-tools and PDF related
 #+BEGIN_SRC emacs-lisp
   (use-package pdf-tools)
+  (use-package interleave)
 #+END_SRC
 * Merlin
   #+BEGIN_SRC emacs-lisp
