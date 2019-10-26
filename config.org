@@ -18,6 +18,7 @@
     (unless (file-exists-p custom-file)
       (write-region "" nil custom-file))
     (load custom-file)
+    (setq org-agenda-include-diary t)
 
     (progn ; backup files settings
       (setq backup-directory-alist `(("." . "~/.saves"))
@@ -93,10 +94,15 @@
   #+END_SRC
 * PDF-tools and PDF related
 #+BEGIN_SRC emacs-lisp
-  (use-package pdf-tools)
+  (use-package pdf-tools
+    :init
+    (progn
+      (pdf-tools-install)))
   (use-package interleave)
+
 #+END_SRC
-* Merlin
+* OCaml
+** Merlin
   #+BEGIN_SRC emacs-lisp
     (use-package merlin
       :diminish)
@@ -113,6 +119,8 @@
             ;; Use opam switch to lookup ocamlmerlin binary
             (setq merlin-command 'opam))))
   #+END_SRC
+** Tuareg
+(use-package tuareg)
 * Haskell
 #+BEGIN_SRC emacs-lisp
   (package-install 'haskell-mode)
@@ -226,6 +234,23 @@
 * All the icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons)
+#+END_SRC
+
+* Journal
+#+BEGIN_SRC emacs-lisp
+  (setq journal-dir "~/notas/diario/")
+
+  (defun get-journal-file-today ()
+    "Return filename for today's journal entry."
+    (let ((date-format "%d_%m_%Y.org"))
+      (expand-file-name (format-time-string date-format) journal-dir)))
+
+  (defun find-journal-file-today ()
+    "Switch to a buffer vising today's journal file."
+    (interactive)
+    (find-file (get-journal-file-today)))
+
+  (global-set-key (kbd "C-c j") 'find-journal-file-today)
 #+END_SRC
 * Keybindings
   #+BEGIN_SRC emacs-lisp
